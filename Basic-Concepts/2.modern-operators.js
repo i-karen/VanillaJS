@@ -202,102 +202,36 @@ restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');
 // Nullish: null and undefined (NOT 0 or '')
 const guestCorrect = restaurant.numGuests ?? 10;
 console.log(guestCorrect);
-///////////////////////////////////////
-// Working With Strings - Part 2
-
-// Split and join
-console.log('a+very+nice+string'.split('+'));
-console.log('Jonas Schmedtmann'.split(' '));
-
-const [firstName, lastName] = 'Jonas Schmedtmann'.split(' ');
-
-const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
-console.log(newName);
-
-const capitalizeName = function (name) {
-  const names = name.split(' ');
-  const namesUpper = [];
-
-  for (const n of names) {
-    // namesUpper.push(n[0].toUpperCase() + n.slice(1));
-    namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
-  }
-  console.log(namesUpper.join(' '));
-};
-
-capitalizeName('jessica ann smith davis');
-capitalizeName('jonas schmedtmann');
-
-// Padding
-const message = 'Go to gate 23!';
-console.log(message.padStart(20, '+').padEnd(30, '+'));
-console.log('Jonas'.padStart(20, '+').padEnd(30, '+'));
-
-const maskCreditCard = function (number) {
-  const str = number + '';
-  const last = str.slice(-4);
-  return last.padStart(str.length, '*');
-};
-
-console.log(maskCreditCard(64637836));
-console.log(maskCreditCard(43378463864647384));
-console.log(maskCreditCard('334859493847755774747'));
-
-// Repeat
-const message2 = 'Bad waether... All Departues Delayed... ';
-console.log(message2.repeat(5));
-
-const planesInLine = function (n) {
-  console.log(`There are ${n} planes in line ${'🛩'.repeat(n)}`);
-};
-planesInLine(5);
-planesInLine(3);
-planesInLine(12);
-
 
 ///////////////////////////////////////
-// Working With Strings - Part 2
+// Optional Chaining
+if (restaurant.openingHours && restaurant.openingHours.mon)
+  console.log(restaurant.openingHours.mon.open);
 
-const airline = 'TAP Air Portugal';
+// console.log(restaurant.openingHours.mon.open);
 
-console.log(airline.toLowerCase());
-console.log(airline.toUpperCase());
+// WITH optional chaining
+console.log(restaurant.openingHours.mon?.open);
+console.log(restaurant.openingHours?.mon?.open);
 
-// Fix capitalization in name
-const passenger = 'jOnAS'; // Jonas
-const passengerLower = passenger.toLowerCase();
-const passengerCorrect =
-  passengerLower[0].toUpperCase() + passengerLower.slice(1);
-console.log(passengerCorrect);
+// Example
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
-// Comparing emails
-const email = 'hello@jonas.io';
-const loginEmail = '  Hello@Jonas.Io \n';
-
-// const lowerEmail = loginEmail.toLowerCase();
-// const trimmedEmail = lowerEmail.trim();
-const normalizedEmail = loginEmail.toLowerCase().trim();
-console.log(normalizedEmail);
-console.log(email === normalizedEmail);
-
-// replacing
-const priceGB = '288,97£';
-const priceUS = priceGB.replace('£', '$').replace(',', '.');
-console.log(priceUS);
-
-const announcement =
-  'All passengers come to boarding door 23. Boarding door 23!';
-
-console.log(announcement.replace('door', 'gate'));
-// console.log(announcement.replaceAll('door', 'gate'));
-console.log(announcement.replace(/door/g, 'gate'));
-
-// Booleans
-const plane = 'Airbus A320neo';
-console.log(plane.includes('A320'));
-console.log(plane.includes('Boeing'));
-console.log(plane.startsWith('Airb'));
-
-if (plane.startsWith('Airbus') && plane.endsWith('neo')) {
-  console.log('Part of the NEW ARirbus family');
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`On ${day}, we open at ${open}`);
 }
+
+// Methods
+console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist');
+
+// Arrays
+const users = [{ name: 'Jonas', email: 'hello@jonas.io' }];
+// const users = [];
+
+console.log(users[0]?.name ?? 'User array empty');
+
+if (users.length > 0) console.log(users[0].name);
+else console.log('user array empty');
+
