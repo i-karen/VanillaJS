@@ -101,4 +101,48 @@ const displayMovements = function(movements){
         inputLoginPin.blur();
       }
     });
+/////////////////
+    btnLogin.addEventListener("click", function(e){
+      //prevent default form submission
+      e.preventDefault();
+      // console.log("LOGIN");
+      // accounts.forEach(function(acc){
+      //   if (acc.username === inputLoginUsername.value){
+      //     containerApp.style.opacity = 100;
+      //   }    
+      // });
+      curAccount = accounts.find((acc)=>acc.username === inputLoginUsername.value);
+      if(curAccount?.pin === Number(inputLoginPin.value)){
+        labelWelcome.textContent = `Welcome back, ${curAccount.owner.split(" ")[0]}!`;
+        containerApp.style.opacity = 100;
+        displayMovements(curAccount.movements);
+        inputLoginPin.value = inputLoginUsername.value = '';
+        inputLoginPin.blur();
+        printBalance(curAccount);
+        displaySummary(curAccount);
+      }
+    });
+    
+    ///////////////
+    const printBalance = function(movements){
+      const bal = movements.reduce(function(acc, cur, i, arr){
+        return acc+cur;
+      },0);
+      labelBalance.textContent = bal + "$";
+    }
+    
+    // printBalance(account1.movements);
+    
+    const displaySummary = function(account){
+      movements = account.movements;
+      const incomes = movements.filter(mov => mov > 0).reduce((acc,mov) => acc+mov, 0);
+      labelSumIn.textContent = `${incomes} $`;
+      const expenses = movements.filter(mov => mov < 0).reduce((acc,mov) => acc+mov, 0);
+      labelSumOut.textContent = `${Math.abs(expenses)} $`;
+    
+      const interest = movements.filter(mov => mov > 0).map(deposit => deposit*account.interestRate/100).filter(deposit => deposit>1).reduce((acc,interest)=>acc+interest,0);
+      labelSumInterest.textContent = `${interest} $`
+    };
+    
+    // displaySummary(account1.movements);
     
